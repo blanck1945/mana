@@ -1,10 +1,10 @@
-import { ManaPreparedRequest } from "../types/ManaRequest";
+import { ManaRequest } from "../instance/ManaRequest";
 import { ManaResponse } from "../types/ManaResponse";
 import { handleResponse } from "./handleResponse";
 
 export const handleJson = async <Data>(
-  response: Response,
-  requestOptions: ManaPreparedRequest
+  request: ManaRequest,
+  response: Response
 ): Promise<ManaResponse<Data>> => {
   try {
     const data = await response.json();
@@ -13,7 +13,7 @@ export const handleJson = async <Data>(
       throw handleResponse<Data>({
         statusCode: response.status,
         message: response.statusText,
-        method: requestOptions.method,
+        method: request.method,
         isOk: response.ok,
       });
     }
@@ -21,7 +21,7 @@ export const handleJson = async <Data>(
     return handleResponse<Data>({
       statusCode: response.status,
       message: response.statusText,
-      method: requestOptions.method,
+      method: request.method,
       isOk: response.ok,
       data,
     });
@@ -29,7 +29,7 @@ export const handleJson = async <Data>(
     throw handleResponse<Data>({
       statusCode: response.status,
       message: response.statusText,
-      method: requestOptions.method,
+      method: request.method,
       isOk: response.ok,
     });
   }

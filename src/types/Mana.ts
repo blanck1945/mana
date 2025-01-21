@@ -1,3 +1,4 @@
+import { ManaRequest } from "../instance/ManaRequest";
 import { ManaRequestInit } from "./ManaRequest";
 import { ManaResponse } from "./ManaResponse";
 
@@ -7,7 +8,7 @@ export type CreateInstanceOptions = {
   timeout?: number;
 };
 
-type RequestInterceptCallback = (request: ManaRequestInit) => ManaRequestInit;
+type RequestInterceptCallback = (request: ManaRequest) => ManaRequest;
 
 type ResponseInterceptCallback<Data = unknown> = (
   response: ManaResponse<Data>
@@ -19,9 +20,7 @@ export type Mana = {
   getOptions: () => CreateInstanceOptions;
   requestInterceptor: RequestInterceptCallback | null;
   responseInterceptor: ResponseInterceptCallback<any> | null;
-  satRequestInterceptor: (
-    cb: (response: ManaRequestInit) => ManaRequestInit
-  ) => void;
+  satRequestInterceptor: (cb: (response: ManaRequest) => ManaRequest) => void;
   setResponseInterceptor: <Data>(
     cb: (response: ManaResponse<Data>) => any
   ) => void;

@@ -1,14 +1,18 @@
-import { get, post, patch, put, _delete } from ".";
 import { HttpMethods } from "../constants/HttpMethods";
 import { handleInterceptorExecution } from "../helpers/handleInterceptorExecution";
+import { ManaRequest } from "../types";
 import { CreateInstanceOptions, Mana } from "../types/Mana";
 import { ManaRequestInit } from "../types/ManaRequest";
 import { ManaResponse } from "../types/ManaResponse";
 
 export const create = (instanceOptions: CreateInstanceOptions) => {
+  const req = new Request(instanceOptions.baseUrl, {
+    ...(instanceOptions?.headers && { headers: instanceOptions?.headers }),
+  });
+
   const defaultsOptions = {
     timeout: 5000,
-    ...instanceOptions,
+    ...req,
   };
 
   const mana: Mana = {
@@ -17,9 +21,7 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     getOptions: () => instanceOptions,
     requestInterceptor: null,
     responseInterceptor: null,
-    satRequestInterceptor: (
-      cb: (request: ManaRequestInit) => ManaRequestInit
-    ) => {
+    satRequestInterceptor: (cb: (request: ManaRequest) => ManaRequest) => {
       mana.requestInterceptor = cb;
     },
     setResponseInterceptor: <Data>(
@@ -27,10 +29,9 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     ) => {
       mana.responseInterceptor = cb;
     },
-    get: async <Data>(url: string, requestOptions?: ManaRequestInit) => {
+    get: async (url: string, requestOptions?: ManaRequestInit) => {
       return await handleInterceptorExecution(
         mana,
-        get,
         instanceOptions.baseUrl + url,
         {
           ...defaultsOptions,
@@ -42,11 +43,14 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     post: async (url: string, requestOptions?: ManaRequestInit) => {
       return await handleInterceptorExecution(
         mana,
-        post,
         instanceOptions.baseUrl + url,
         {
           ...defaultsOptions,
           ...requestOptions,
+          headers: {
+            ...defaultsOptions.headers,
+            ...requestOptions?.headers,
+          },
           method: HttpMethods.POST,
         }
       );
@@ -54,7 +58,6 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     patch: async (url: string, requestOptions?: ManaRequestInit) => {
       return await handleInterceptorExecution(
         mana,
-        patch,
         instanceOptions.baseUrl + url,
         {
           ...defaultsOptions,
@@ -66,7 +69,6 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     put: async (url: string, requestOptions?: ManaRequestInit) => {
       return await handleInterceptorExecution(
         mana,
-        put,
         instanceOptions.baseUrl + url,
         {
           ...defaultsOptions,
@@ -78,7 +80,6 @@ export const create = (instanceOptions: CreateInstanceOptions) => {
     _delete: async (url: string, requestOptions?: ManaRequestInit) => {
       return await handleInterceptorExecution(
         mana,
-        _delete,
         instanceOptions.baseUrl + url,
         {
           ...defaultsOptions,

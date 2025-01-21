@@ -3,7 +3,7 @@ import { HttpMethodsType } from "../constants/HttpMethods";
 export type ResponseOptions<Data> = {
   statusCode: number;
   message: string;
-  method: HttpMethodsType;
+  method: string;
   data?: Data;
   isOk: boolean;
 };

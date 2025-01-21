@@ -1,24 +1,27 @@
-import { MapFunctionsType } from "../constants/MapFunctions";
 import { Mana } from "../types/Mana";
 import { ManaRequestInit } from "../types/ManaRequest";
+import { ManaRequest } from "../instance/ManaRequest";
+import { handleExecution } from "./handleExecution";
+import { handleJson } from "./handleJson";
 
 export const handleInterceptorExecution = async <Data>(
   mana: Mana,
-  cb: MapFunctionsType,
   url: string,
   mergeRequestOptions: ManaRequestInit
 ) => {
-  let interceptRequest = mergeRequestOptions;
+  const request = new ManaRequest(url, mergeRequestOptions);
 
   if (mana.requestInterceptor) {
-    interceptRequest = await mana.requestInterceptor(mergeRequestOptions);
+    await mana.requestInterceptor(request);
   }
 
-  const response = await cb<Data>(url, interceptRequest);
+  const response = await handleExecution<Data>(request);
+
+  const jsonResponse = await handleJson<Data>(request, response);
 
   if (mana.responseInterceptor) {
-    return await mana.responseInterceptor(response);
+    return await mana.responseInterceptor(jsonResponse);
   }
 
-  return response;
+  return jsonResponse;
 };

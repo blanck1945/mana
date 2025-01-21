@@ -1,24 +1,12 @@
-import { HttpMethods } from "../constants/HttpMethods";
 import { handleExecution } from "../helpers/handleExecution";
 import { handleJson } from "../helpers/handleJson";
-import { handleRequest } from "../helpers/handleRequest";
+import { ManaRequest } from "../instance/ManaRequest";
 import { ManaRequestInit } from "../types/ManaRequest";
-import { ManaResponse } from "../types/ManaResponse";
 
-export const get = async <Data>(
-  url: string,
-  options?: ManaRequestInit
-): Promise<ManaResponse<Data>> => {
-  const [requestOptions, abortController] = handleRequest(
-    HttpMethods.GET,
-    options
-  );
+export const get = async <Data>(url: string, options: ManaRequestInit = {}) => {
+  const request = new ManaRequest(url, options);
 
-  const response = await handleExecution<Data>(
-    url,
-    requestOptions,
-    abortController
-  );
+  const response = await handleExecution<Data>(request);
 
-  return await handleJson<Data>(response, requestOptions);
+  return await handleJson<Data>(request, response);
 };

@@ -1,22 +1,18 @@
-import { ManaPreparedRequest } from "../types/ManaRequest";
+import { ManaRequest } from "../instance/ManaRequest";
 import { handleResponse } from "./handleResponse";
 
-export const handleTimeOut = (
-  controller: AbortController,
-  requestOptions: ManaPreparedRequest,
-  isTimeoutClean: boolean
-) => {
+export const handleTimeOut = (request: ManaRequest) => {
   const timeoutReference = setTimeout(() => {
-    controller.abort();
+    request.abort();
     clearTimeout(timeoutReference);
-    isTimeoutClean = true;
+    request.toggleIsTimeoutClean();
     throw handleResponse({
       statusCode: 408,
       message: "TIMEOUT - This operation was aborted",
-      method: requestOptions.method,
+      method: "GET",
       isOk: false,
     });
-  }, requestOptions.timeout);
+  }, request.getTimeout());
 
   return timeoutReference;
 };
