@@ -1,0 +1,32 @@
+{
+  "name": "mana",
+  "version": "1.0.0",
+  "main": "dist/index.js",         
+  "module": "dist/index.mjs",      
+  "types": "dist/index.d.ts",      
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs", 
+      "require": "./dist/index.js"
+    }
+  },      
+  "files": ["dist"],  
+  "scripts": {
+    "build": "npx tsup",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usuario/mi-libreria.git"
+  },
+  "keywords": ["libreria", "typescript", "npm"],
+  "author": "Okubo",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
+  }
+}
