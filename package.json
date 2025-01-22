@@ -1,5 +1,5 @@
 {
-  "name": "mana",
+  "name": "fmana",
   "version": "1.0.0",
   "main": "dist/index.js",         
   "module": "dist/index.mjs",      
@@ -12,7 +12,7 @@
   },      
   "files": ["dist"],  
   "scripts": {
-    "build": "npx tsup",
+    "build": "tsup --format esm,cjs --dts --minify --clean",
     "start": "node dist/index.js",
     "dev": "tsc --watch"
   },
