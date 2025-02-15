@@ -23,7 +23,7 @@ export const handleJson = async <Data>(
       message: response.statusText,
       method: request.method,
       isOk: response.ok,
-      data: jsonData.data,
+      data: jsonData,
     });
   } catch (err) {
     throw handleResponse<Data>({
