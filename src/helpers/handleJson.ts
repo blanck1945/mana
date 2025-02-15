@@ -7,7 +7,7 @@ export const handleJson = async <Data>(
   response: Response
 ): Promise<ManaResponse<Data>> => {
   try {
-    const data = await response.json();
+    const jsonData = await response.json();
 
     if (!response.ok) {
       throw handleResponse<Data>({
@@ -23,7 +23,7 @@ export const handleJson = async <Data>(
       message: response.statusText,
       method: request.method,
       isOk: response.ok,
-      data,
+      data: jsonData.data,
     });
   } catch (err) {
     throw handleResponse<Data>({
