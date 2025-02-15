@@ -1,16 +1,18 @@
 {
   "name": "fmana",
-  "version": "1.0.3",
-  "main": "dist/index.js",         
-  "module": "dist/index.mjs",      
-  "types": "dist/index.d.ts",      
+  "version": "1.0.4",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs", 
+      "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
-  },      
-  "files": ["dist"],  
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup --format esm,cjs --dts --minify --clean",
     "start": "node dist/index.js",
@@ -20,7 +22,11 @@
     "type": "git",
     "url": "https://github.com/usuario/mi-libreria.git"
   },
-  "keywords": ["libreria", "typescript", "npm"],
+  "keywords": [
+    "libreria",
+    "typescript",
+    "npm"
+  ],
   "author": "Okubo",
   "license": "ISC",
   "description": "",
